@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JokeVault - Random Joke Generator</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="background">
+      <div id="emoji-container" class="emoji-background"></div>
+      <div class="blob blob1"></div>
+      <div class="blob blob2"></div>
+      <div class="blob blob3"></div>
+    </div>
+
+    <div class="container">
+      <header>
+        <div class="logo">
+          <i class="fas fa-laugh-beam logo-icon"></i>
+          <h1>JokeVault</h1>
+        </div>
+        <div class="theme-toggle">
+          <i class="fas fa-sun"></i>
+          <label class="switch">
+            <input type="checkbox" id="theme-switch" />
+            <span class="slider round"></span>
+          </label>
+          <i class="fas fa-moon"></i>
+        </div>
+      </header>
+
+      <div class="categories">
+        <button class="category-btn active" data-category="Any">
+          <span class="emoji">😂</span> Any
+        </button>
+        <button class="category-btn" data-category="Programming">
+          <span class="emoji">👨‍💻</span> Programming
+        </button>
+        <button class="category-btn" data-category="Misc">
+          <span class="emoji">🎭</span> Misc
+        </button>
+        <button class="category-btn" data-category="Pun">
+          <span class="emoji">🤣</span> Pun
+        </button>
+        <button class="category-btn" data-category="Spooky">
+          <span class="emoji">👻</span> Spooky
+        </button>
+        <button class="category-btn" data-category="Christmas">
+          <span class="emoji">🎅</span> Christmas
+        </button>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="new-jokes">
+          <i class="fas fa-sparkles"></i> New Jokes
+        </button>
+        <button class="tab-btn" data-tab="favorites">
+          <i class="fas fa-heart"></i> Favorites
+          <span id="favorites-count">(0)</span>
+        </button>
+      </div>
+
+      <div class="tab-content active" id="new-jokes">
+        <div id="loader" class="loader-container">
+          <div class="loader">
+            <div class="loader-inner"></div>
+            <div class="loader-inner-2"></div>
+            <div class="loader-inner-3"></div>
+          </div>
+          <p>Loading your joke...</p>
+        </div>
+
+        <div id="error-message" class="error-message">
+          <p>Failed to fetch joke. Please try again.</p>
+          <button id="try-again-btn" class="btn">Try Again</button>
+        </div>
+
+        <div id="joke-card" class="joke-card">
+          <div class="joke-header">
+            <div class="joke-category">
+              <span id="joke-category-emoji" class="emoji">😂</span>
+              <span id="joke-category-text">Any</span>
+            </div>
+            <div class="joke-actions">
+              <button
+                id="copy-btn"
+                class="action-btn"
+                title="Copy to clipboard"
+              >
+                <i class="fas fa-copy"></i>
+              </button>
+              <button id="share-btn" class="action-btn" title="Share joke">
+                <i class="fas fa-share-alt"></i>
+              </button>
+              <button
+                id="favorite-btn"
+                class="action-btn"
+                title="Add to favorites"
+              >
+                <i class="fas fa-bookmark"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="joke-content">
+            <div class="joke-illustration">
+              <div class="illustration-circle circle1"></div>
+              <div class="illustration-circle circle2"></div>
+              <div class="illustration-circle circle3"></div>
+              <div id="joke-emoji" class="joke-emoji">😂</div>
+            </div>
+
+            <p id="joke-setup" class="joke-setup"></p>
+
+            <div id="joke-reveal-container" class="joke-reveal-container">
+              <button id="reveal-btn" class="reveal-btn">
+                <i class="fas fa-sparkles"></i> Reveal Punchline
+              </button>
+            </div>
+
+            <div id="joke-separator" class="joke-separator">
+              <hr />
+              <div class="separator-icon">
+                <i class="fas fa-sparkles"></i>
+              </div>
+            </div>
+
+            <p id="joke-delivery" class="joke-delivery"></p>
+          </div>
+
+          <div class="joke-footer">
+            <div class="reaction-btns">
+              <button id="funny-btn" class="reaction-btn">
+                <i class="fas fa-thumbs-up"></i> Funny
+              </button>
+              <button id="not-funny-btn" class="reaction-btn">
+                <i class="fas fa-thumbs-down"></i> Not Funny
+              </button>
+            </div>
+            <button id="next-joke-btn" class="next-btn">
+              <i class="fas fa-sync-alt"></i> Next Joke
+            </button>
+          </div>
+        </div>
+
+        <div id="history-container" class="history-container">
+          <h3 class="history-title">Recently Viewed</h3>
+          <div id="joke-history" class="joke-history"></div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="favorites">
+        <div id="no-favorites" class="no-favorites">
+          <i class="fas fa-bookmark-check no-favorites-icon"></i>
+          <h3>No favorites yet</h3>
+          <p>Save your favorite jokes to view them later</p>
+          <button id="discover-jokes-btn" class="btn">Discover Jokes</button>
+        </div>
+        <div id="favorites-container" class="favorites-container"></div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast">
+      <div class="toast-content">
+        <i id="toast-icon" class="fas fa-check-circle"></i>
+        <div class="toast-message">
+          <span id="toast-title">Success</span>
+          <span id="toast-description">Action completed successfully</span>
+        </div>
+      </div>
+      <div class="toast-progress"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
